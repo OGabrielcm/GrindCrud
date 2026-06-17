@@ -104,7 +104,7 @@ void MenuMedicos(){
     }
         void EditarMedico()
     {
-        
+
         string crm = Validador.ValidarCrm("CRM do medico a editar: ");
     }
         void ExcluirMedico(){}
