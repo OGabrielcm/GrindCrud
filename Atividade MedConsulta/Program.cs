@@ -1,4 +1,5 @@
 ﻿using Atividade_MedConsulta.Models;
+using Atividade_MedConsulta.Helpers;
 using Atividade_MedConsulta.Enums;
 
 List<Medico> medicos = [];
@@ -75,12 +76,38 @@ void MenuMedicos(){
                 Console.WriteLine("Opcao Invalida");
                 break;
         }
-
-        void CadastrarMedico(){}
-        void ListarMedico(){}
-        void EditarMedico(){}
-        void ExcluirMedico(){}
     }
+        void CadastrarMedico()
+    {
+        string crm = Validador.ValidarCrm("CRM (ex: CRM123456): ");
+        string nome = Validador.ValidarTexto("Nome: ");
+        string especialidade = Validador.ValidarTexto("Especialidade: ");
+
+        if(medicos.Any(m => m.Crm == crm))
+        {
+            Console.WriteLine("[ERRO] CRM ja cadastrado.");
+            return;
+        }
+
+        medicos.Add(new Medico(crm,nome,especialidade));
+        Console.WriteLine("[OK] Medico cadastrado com sucesso");
+    }
+        void ListarMedico()
+    {
+        if (medicos.Count == 0)
+        {
+            Console.WriteLine("Nenhum medico registrado encontrado");
+            return;
+        }
+
+        medicos.ForEach(m => Console.WriteLine(m));
+    }
+        void EditarMedico()
+    {
+        
+        string crm = Validador.ValidarCrm("CRM do medico a editar: ");
+    }
+        void ExcluirMedico(){}
 } 
 
 void MenuPacientes()

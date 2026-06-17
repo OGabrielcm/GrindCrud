@@ -10,8 +10,19 @@ public class Medico
         Especialidade = especialidade;
     }
 
-    public string Crm { get; private set; } // como "CRM12345"
+    public string Crm { get; private set; } 
     public string Nome { get; private set; }
     public string Especialidade { get; private set; }
+    
+    public void Atualizar(string nome, string especialidade)
+    {
+        Nome = nome;
+        Especialidade = especialidade;
+    }
+
+    public override string ToString()
+    {
+        return $"CRM: {Crm} | Nome: {Nome} | Especialidade: {Especialidade}";
+    }
 }
 
