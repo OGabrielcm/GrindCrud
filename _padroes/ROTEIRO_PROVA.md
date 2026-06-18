@@ -5,6 +5,28 @@
 
 ---
 
+## TL;DR — o fluxo (cola na parede)
+
+```
+ler regras → anota regras → enums → models → validador →
+program → CRUD pai → filhos → relatórios → teste ponta a ponta
+```
+
+1. **Ler regras** — lê o enunciado inteiro 1x como engenheiro, sem codar. Sublinha substantivos, campos, "único", "não pode".
+2. **Anota regras** — numa folha: entidades · campos de cada · qual é o **único** (vira imutável) · quem é **filho de quem** (pai entra 1º) · valores fechados → **enum** · "não pode 2 iguais" → **unicidade** · "não pode excluir se…" → **dependência** · cada **relatório** com o verbo (buscar/rankear/ordenar/filtrar).
+3. **Enums** — os tipos fechados do domínio (status, tipo). Antes das models porque elas usam.
+4. **Models** — por entidade: **construtor** + **propriedades** `{get; private set;}` + **`Atualizar()`** (só campos editáveis, **sem o único**) + **`override ToString()`**. Campo de ciclo de vida (status) → método próprio `AlterarStatus()`.
+5. **Validador** (estático) — um método por tipo de leitura (texto, int, decimal, data, CPF/código, `ValidarOpcaoEnum<T>`). Cada um: imprime → lê → `while` valida → devolve limpo.
+6. **Program** — `List<>` de cada entidade + menu/submenus com os métodos **vazios** (placeholders). **Compila e navega aqui** antes de implementar.
+7. **CRUD pai** (entidade sem dependência, ex.: Médico) — `Cadastrar` (ler→unicidade→`new`→`Add`) · `Listar` · `Editar` (listar→buscar→`Atualizar`) · `Excluir` (buscar→checar dependente→`Remove`). **Compila e testa as 4.**
+8. **Filhos** — replica o esqueleto. Trocar: tipo/lista · campos únicos · **ordem do `new`** · cadastro busca o **pai** e aborta se órfão. **Lê linha por linha caçando nome herdado.**
+9. **Relatórios** — guarda de vazio → busca âncora → LINQ (`Contains`/`GroupBy`/`OrderBy`) → trata vazio → imprime. **Confere a direção da ordenação que o enunciado pediu.**
+10. **Teste ponta a ponta** — cadastra → edita → relatório → exclui. Casos de borda: lista vazia, chave inexistente, valor 0.
+
+> **Regra de ouro do tempo:** compila a cada degrau (nunca empilha 4 métodos sem rodar). **Regra de ouro do bug:** depois de colar, lê linha por linha — os nomes não se renomeiam sozinhos.
+
+---
+
 ## 0. Antes de digitar (10 min) — ler o enunciado como engenheiro
 
 Extraia numa folha, nesta ordem:
