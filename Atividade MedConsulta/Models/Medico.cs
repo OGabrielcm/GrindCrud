@@ -10,10 +10,10 @@ public class Medico
         Especialidade = especialidade;
     }
 
-    public string Crm { get; private set; } 
+    public string Crm { get; }
     public string Nome { get; private set; }
     public string Especialidade { get; private set; }
-    
+
     public void Atualizar(string nome, string especialidade)
     {
         Nome = nome;

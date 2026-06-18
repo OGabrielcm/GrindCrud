@@ -16,5 +16,16 @@ public class Agendamento
     public DateTime DataConfirmada {get; private set;}
     public Paciente Paciente {get; private set;}
     public Consulta Consulta {get; private set;}
+
+    public void Atualizar(TipoAtendimentoEnum tipoAtendimento, decimal valorCobrado)
+    {
+        TipoAtendimento = tipoAtendimento;
+        ValorCobrado = valorCobrado;
+    }
+
+    public override string ToString()
+    {
+        return $"Tipo: {TipoAtendimento} | Valor: {ValorCobrado:F2} | Confirmado em: {DataConfirmada:dd/MM/yyyy} | Paciente: {Paciente.NomeCompleto} | Codigo da Consulta: {Consulta.CodigoUnico}";
+    }
 }
 

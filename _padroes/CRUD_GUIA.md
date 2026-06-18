@@ -96,6 +96,12 @@ void EditarMedico()
 ```
 
 > Identificadores únicos (CRM, CPF, código) **não** se editam — mudar quebraria as referências dos agendamentos/consultas.
+>
+> **Campo com método mutador dedicado** (ex.: `Consulta.AlterarStatus`, separado de `Atualizar` por SRP): NÃO o enfie no `Editar`. Crie uma **opção de menu própria** (ex.: "5. Alterar Status") que reusa o mesmo começo (guarda de vazio → `Listar()` → buscar → guarda de `null`) e troca só o passo final por `obj.AlterarX(...)`. O menu espelha a separação de responsabilidades do Model.
+>
+> **Ler um enum do usuário:** use `Validador.ValidarOpcaoEnum<MeuEnum>(...)` — ele lista as opções via `Enum.GetValues<T>()` e devolve o **valor do enum já tipado**. Prefira isso ao cast cru `(MeuEnum)int`: o cast aceita números fora da faixa e cria "enum-fantasma"; o índice no array só devolve valores reais.
+>
+> **Campo editável que TAMBÉM é único** (ex.: número da carteirinha): ao reler, re-cheque a unicidade **excluindo o próprio registro** — `lista.Any(x => x != atual && x.Campo == novo)`. Sem o `x != atual`, manter o mesmo valor dispara um "[ERRO] já existe" falso e trava a edição.
 
 ---
 
@@ -148,7 +154,7 @@ Cada método **imprime a pergunta, lê, valida em `while` e devolve o valor limp
 | `ValidarDecimal(string msg)` | `decimal.TryParse` e `>= 0` | `decimal` |
 | `ValidarData(string msg)` | `DateTime.TryParse` e não futura | `DateTime` |
 | `ValidarDataHora(string msg)` | `DateTime.TryParse` | `DateTime` |
-| `ValidarOpcaoEnum<T>(string msg)` | inteiro dentro de `Enum.GetValues<T>().Length` | `int` (ou `T`) |
+| `ValidarOpcaoEnum<T>(string msg)` | inteiro de `1` a `Enum.GetValues<T>().Length` | `T` (o valor do enum, já tipado) |
 
 **Forma de um método (modelo único — replique mudando a condição do `while`):**
 
